@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 const express = require("express");
 const helmet = require("helmet");
 const nocache = require("nocache");
-const { messageRouter } = require("./messages/messages.router");
+const { messagesRouter } = require("./messages/messages.router");
 
 
 dotenv.config()
@@ -53,7 +53,7 @@ app.use(
 );
 
 app.use("/api", apiRouter);
-apiRouter.use("/messages", messageRouter);
+apiRouter.use("/messages", messagesRouter);
 
 app.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
