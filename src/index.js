@@ -4,8 +4,7 @@ const express = require("express");
 const helmet = require("helmet");
 const nocache = require("nocache");
 const { messageRouter } = require("./messages/messages.router");
-const {expressjwt: jwt} = require('express-jwt')
-const jwks = require('jwks-rsa')
+
 
 dotenv.config()
 if (!(process.env.PORT && process.env.CLIENT_ORIGIN_URL)) {
@@ -53,19 +52,6 @@ app.use(
   })
 );
 
-const verifyJWT = jwt({
-  secret: jwks.expressJwtSecret({
-    cache: true,
-    rateLimit: true,
-    jwksRequestsPerMinute: 5,
-    jwksUri: `https://${process.env.AUTH0_DOMAIN}/.well-known/jwks.json`
-  }),
-  audience: process.env.AUTH0_AUDIENCE,
-  issuer: process.env.AUTH0_DOMAIN,
-  algorithms: ["RS256"]
-}).unless({path: ["/api/messages/public"]})
-
-app.use(verifyJWT)
 app.use("/api", apiRouter);
 apiRouter.use("/messages", messageRouter);
 
